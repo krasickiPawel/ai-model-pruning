@@ -1,9 +1,10 @@
 import copy
 import torch
 import time
+import constants
 
 
-def train(model, data_loaders_phases, loss_func, optimizer, num_epochs=1):
+def train(model, data_loaders, loss_func, optimizer, num_epochs=1):
     device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
     print(device)
     model = model.to(device)
@@ -14,14 +15,14 @@ def train(model, data_loaders_phases, loss_func, optimizer, num_epochs=1):
 
     start = time.time()
     for epoch in range(num_epochs):
-        print('Epoch {}/{}'.format(epoch, num_epochs - 1))
-        print('-' * 10)
-        for phase in data_loaders_phases:
+        print('Epoch {}/{}'.format(epoch, constants.NUM_EPOCHS - 1))
+        print('-' * 40)
+        for phase in data_loaders:
             model.train() if phase == 'train' else model.eval()
             current_loss = 0.0
             current_corrects = 0
 
-            for imgs, labels in data_loaders_phases[phase]:
+            for imgs, labels in data_loaders[phase]:
                 imgs = imgs.to(device)
                 labels = labels.to(device)
                 optimizer.zero_grad()
@@ -34,10 +35,10 @@ def train(model, data_loaders_phases, loss_func, optimizer, num_epochs=1):
                         optimizer.step()
 
                 current_loss += loss.item() * imgs.size(0)
-                current_corrects += torch.sum(preds == labels.data)
+                current_corrects += torch.sum(preds == labels.data)  # trzeba sprawdzić
 
-            epoch_loss = current_loss / len(data_loaders_phases[phase].dataset)
-            epoch_acc = current_corrects.double() / len(data_loaders_phases[phase].dataset)
+            epoch_loss = current_loss / len(data_loaders[phase].dataset)
+            epoch_acc = current_corrects.double() / len(data_loaders[phase].dataset)        # TODO zamienić na f1
 
             print('{} Loss: {:.4f} Acc: {:.4f}'.format(phase, epoch_loss, epoch_acc))
             if phase == "test" and epoch_acc > best_acc:
@@ -54,4 +55,5 @@ def train(model, data_loaders_phases, loss_func, optimizer, num_epochs=1):
     print('Best val Acc: {:4f}'.format(best_acc))
 
     model.load_state_dict(best_model_wts)
+
     return model, test_acc_history, best_acc

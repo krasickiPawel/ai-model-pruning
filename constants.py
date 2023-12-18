@@ -1,4 +1,4 @@
-DATASET_DIR = r"D:\UM\projekt\datasets"
+DATASET_DIR = "datasets"
 ZIP_FILE_NAME = "archive.zip"
 
 DATASET_NAMES = [
@@ -15,8 +15,16 @@ DATASET_CANCER_LABELS = {
     "UltrasoundBreastImagesforBreastCancer": ("benign", "malignant")
 }
 
+NUM_CLASSES = 2
 N_SPLITS = 5
 N_REPEATS = 2
-df_best_features = None
 
+BATCH_SIZE = 8
+NUM_EPOCHS = 3
+
+LEARNING_RATE = 0.01
+MOMENTUM = 0.9
+
+MODEL_PATH = "breast_model_pruning.pth"
+PRUNING_VALUES = [0.1, 0.2, 0.4, 0.6, 0.8]
 
