@@ -1,28 +1,27 @@
 import imghdr
 
 import torchvision.transforms as transforms
-from PIL import Image
+# from PIL import Image
 
 
 def get_transform_train(input_required_size=224):
     return transforms.Compose([
         transforms.Resize((input_required_size, input_required_size)),
         transforms.CenterCrop(input_required_size),
-        transforms.RandomHorizontalFlip(),
+        # transforms.RandomHorizontalFlip(),
         transforms.ToTensor(),
-        # transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-        transforms.Normalize(mean=[0.5], std=[0.5]),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        # transforms.Normalize(mean=[0.5], std=[0.5]),
     ])
 
 
 def get_transform_test(input_required_size=224):
     return transforms.Compose([
         transforms.Resize((input_required_size, input_required_size)),
-        transforms.
         transforms.CenterCrop(input_required_size),
         transforms.ToTensor(),
-        # transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-        transforms.Normalize(mean=[0.5], std=[0.5])
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        # transforms.Normalize(mean=[0.5], std=[0.5])
     ])
 
 

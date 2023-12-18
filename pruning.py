@@ -3,12 +3,12 @@ import torch.nn.utils.prune as prune
 
 def prune_worst(model):
     module = model.conv1
-    prune.l1_unstructured(module, name="bias", amount=3)
+    return prune.l1_unstructured(module, name="bias", amount=3)
 
 
 def prune_random(model):
     module = model.conv1
-    prune.random_unstructured(module, name="weight", amount=0.3)
+    return prune.random_unstructured(module, name="weight", amount=0.3)
 
 
 class RandomPruningMethod(prune.BasePruningMethod):

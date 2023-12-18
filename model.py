@@ -1,6 +1,6 @@
 import torch.nn as nn
 import torchvision.models as models
-import torch.nn.functional as F
+# import torch.nn.functional as F
 
 
 def set_parameter_requires_grad(model, fine_tuning):
