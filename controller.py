@@ -51,6 +51,9 @@ for dataset_id, dataset in enumerate(constants.DATASET_NAMES):
             optimizer,
             constants.NUM_EPOCHS
         )
+
+        # pruning?
+
         print("Finetuning enabled")
         for param in model.parameters():
             param.requires_grad = True
@@ -74,3 +77,5 @@ for dataset_id, dataset in enumerate(constants.DATASET_NAMES):
 file_date = datetime.datetime.now().time()
 filename = f'results_{file_date}'.replace(".", "_").replace(":", "_")
 np.save(filename, scores)
+
+
