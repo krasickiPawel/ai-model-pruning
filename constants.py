@@ -1,19 +1,7 @@
-DATASET_DIR = "datasets"
-ZIP_FILE_NAME = "archive.zip"
+DATASET_SOURCE_DIR = "datasets xddddd"
 
-DATASET_NAMES = [
-    "BreaKHis400X",
-    # "BreastUltrasoundImagesDataset(BUSI)",
-    # "UltrasoundBreastImagesforBreastCancer",
-    # "BreastHistopathologyImages" # dodać wybieranie tylko tego folderu wewnętrzengo żeby /2
-]
-
-DATASET_CANCER_LABELS = {
-    "BreaKHis400X": ("benign", "malignant"),
-    "BreastHistopathologyImages": ("class0", "class1"),
-    "BreastUltrasoundImagesDataset(BUSI)": ("normal", "malignant", "benign"),
-    "UltrasoundBreastImagesforBreastCancer": ("benign", "malignant")
-}
+DATASETS_DIR = "datasets"
+DEFAULT_ZIP_FILE_NAME = "archive.zip"
 
 NUM_CLASSES = 2
 N_SPLITS = 5
@@ -27,4 +15,3 @@ MOMENTUM = 0.9
 
 MODEL_PATH = "breast_model_pruning.pth"
 PRUNING_VALUES = [0.1, 0.2, 0.4, 0.6, 0.8]
-
