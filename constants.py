@@ -1,7 +1,5 @@
-DATASET_SOURCE_DIR = "datasets xddddd"
-
 DATASETS_DIR = "datasets"
-DEFAULT_ZIP_FILE_NAME = "archive.zip"
+MODELS_DIR = "models"
 
 NUM_CLASSES = 2
 N_SPLITS = 5
