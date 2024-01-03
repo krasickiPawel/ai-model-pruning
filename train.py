@@ -18,6 +18,9 @@ import glob
 datasets = os.listdir(constants.DATASETS_DIR)
 
 model_base = create_resnet_model(constants.NUM_CLASSES, fine_tuning=False)
+for param in model_base.parameters():
+    param.requires_grad = True
+
 rskf = RepeatedStratifiedKFold(n_repeats=constants.N_SPLITS, n_splits=constants.N_REPEATS, random_state=23)
 scores = np.zeros((len(datasets), constants.N_SPLITS * constants.N_REPEATS))
 

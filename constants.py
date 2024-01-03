@@ -12,7 +12,7 @@ BATCH_SIZE = 8
 # NUM_EPOCHS = 2
 NUM_EPOCHS = 10
 
-LEARNING_RATE = 0.01
+LEARNING_RATE = 0.001
 MOMENTUM = 0.9
 
 MODEL_PATH = "breast_model_pruning.pth"

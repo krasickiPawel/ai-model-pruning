@@ -4,7 +4,7 @@ import torch.nn.utils.prune as prune
 
 def prune_worst(model, prune_amount):
     for module in get_conv_layers(model):
-        prune.l1_unstructured(module, name="bias", amount=prune_amount)     # verify bias and l1_unstructued
+        prune.l1_unstructured(module, name="weight", amount=prune_amount)     # verify bias and l1_unstructued
 
 
 def prune_random(model, prune_amount=0.3):

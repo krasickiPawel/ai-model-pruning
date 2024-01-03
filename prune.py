@@ -61,12 +61,16 @@ for dataset_id, dataset in enumerate(datasets):
         dl_test = DataLoader(dataset=dataset_test, batch_size=constants.BATCH_SIZE, shuffle=False)
 
         for pruning_method_id, pruning_method in enumerate(pruning_methods):
-            scores[dataset_id, fold_id, pruning_method_id, 0] = get_f1_score(model_base, dl_test)
+            default_score = get_f1_score(model_base, dl_test)
+            scores[dataset_id, fold_id, pruning_method_id, 0] = default_score
+            print(f"Before pruning score:", default_score)
 
             for pruning_value_id, pruning_value in enumerate(pruning_values, 1):
                 model = copy.deepcopy(model_base)
                 pruning_method(model, pruning_value)
-                scores[dataset_id, fold_id, pruning_method_id, pruning_value_id] = get_f1_score(model, dl_test)
+                pruned_score = get_f1_score(model, dl_test)
+                scores[dataset_id, fold_id, pruning_method_id, pruning_value_id] = pruned_score
+                print(f"Pruned with {pruning_method.__name__}({pruning_value}) score:", pruned_score)
 
 
 scores_name = "pruning_scores.npy"
