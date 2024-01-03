@@ -1,25 +1,30 @@
+import torch
 import torch.nn.utils.prune as prune
 
 
-def prune_worst(model):
-    module = model.conv1
-    return prune.l1_unstructured(module, name="bias", amount=3)
+def prune_worst(model, prune_amount):
+    for module in get_conv_layers(model):
+        prune.l1_unstructured(module, name="bias", amount=prune_amount)     # verify bias and l1_unstructued
 
 
-def prune_random(model):
-    module = model.conv1
-    return prune.random_unstructured(module, name="weight", amount=0.3)
+def prune_random(model, prune_amount=0.3):
+    for module in get_conv_layers(model):
+        prune.random_unstructured(module, name="weight", amount=prune_amount)
 
 
-class RandomPruningMethod(prune.BasePruningMethod):
-    """Prune every other entry in a tensor"""
+def get_conv_layers(model):
+    return [module for module in filter(lambda m: type(m) == torch.nn.Conv2d, model.modules())]
 
-    PRUNING_TYPE = "unstructured"
-
-    def compute_mask(self, t, default_mask):
-        mask = default_mask.clone()
-        mask.view(-1)[::2] = 0
-        return mask
+#
+# class RandomPruningMethod(prune.BasePruningMethod):
+#     """Prune every other entry in a tensor"""
+#
+#     PRUNING_TYPE = "unstructured"
+#
+#     def compute_mask(self, t, default_mask):
+#         mask = default_mask.clone()
+#         mask.view(-1)[::2] = 0
+#         return mask
 
 
 # parameters_to_prune = [

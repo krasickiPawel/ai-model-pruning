@@ -1,5 +1,6 @@
 DATASETS_DIR = "datasets"
 MODELS_DIR = "models"
+PRUNING_DIR = "pruning"
 
 NUM_CLASSES = 2
 

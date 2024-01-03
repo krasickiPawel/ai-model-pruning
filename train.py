@@ -8,7 +8,7 @@ from preprocessing import os_helper
 from model import create_resnet_model
 import numpy as np
 import constants
-import dataset_definition
+from dataset import BreastDataset
 import transformations
 import os
 from training import train_model
@@ -20,7 +20,6 @@ datasets = os.listdir(constants.DATASETS_DIR)
 model_base = create_resnet_model(constants.NUM_CLASSES, fine_tuning=False)
 rskf = RepeatedStratifiedKFold(n_repeats=constants.N_SPLITS, n_splits=constants.N_REPEATS, random_state=23)
 scores = np.zeros((len(datasets), constants.N_SPLITS * constants.N_REPEATS))
-os_helper.create_dir_if_not_exist(constants.MODELS_DIR)
 
 current_time_dir = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 os_helper.create_dir_if_not_exist(constants.MODELS_DIR)
@@ -52,8 +51,8 @@ for dataset_id, dataset in enumerate(datasets):
         y_train = torch.from_numpy(y_labels[train]).type(torch.LongTensor)
         y_test = torch.from_numpy(y_labels[test]).type(torch.LongTensor)
 
-        dataset_train = dataset_definition.BreastDataset(paths=X_file_paths[train], labels=y_train, trans=transformer)
-        dataset_test = dataset_definition.BreastDataset(paths=X_file_paths[test], labels=y_test, trans=transformer)
+        dataset_train = BreastDataset(paths=X_file_paths[train], labels=y_train, trans=transformer)
+        dataset_test = BreastDataset(paths=X_file_paths[test], labels=y_test, trans=transformer)
 
         dl_train = DataLoader(dataset=dataset_train, batch_size=constants.BATCH_SIZE, shuffle=True)
         dl_test = DataLoader(dataset=dataset_test, batch_size=constants.BATCH_SIZE, shuffle=False)
@@ -61,10 +60,6 @@ for dataset_id, dataset in enumerate(datasets):
 
         model, f1_result = train_model(model, loaders, loss_func, optimizer, constants.NUM_EPOCHS)
         scores[dataset_id, fold_id] = f1_result
-
-        ################################################################################################################
-        # pruning?
-        ################################################################################################################
 
         model_name = f"ai-model-pruning_fold-{fold_id}_score-{round(scores[dataset_id, fold_id] * 100)}.pth"
         model_save_path = os.path.join(constants.MODELS_DIR, current_time_dir, dataset, model_name)
