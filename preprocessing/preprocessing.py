@@ -1,10 +1,10 @@
 import os
 import sys
-
 import settings
 import os_helper
 from dataset_info import DATASETS_INFOS
 import zip_helper
+from delete_masks import delete_redundant_files
 
 
 if len(sys.argv) <= 1:
@@ -22,4 +22,4 @@ for di in DATASETS_INFOS:
     zip_file_path = os.path.join(settings.DATASETS_SOURCE_DIR, di.name, di.zip_file_name)
     zip_helper.extract_images_from_zip(zip_file_path, di, settings.DATASETS_RESIZED_DIR)
 
-
+delete_redundant_files()

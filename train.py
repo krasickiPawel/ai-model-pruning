@@ -69,6 +69,5 @@ for dataset_id, dataset in enumerate(datasets):
         torch.save(model, model_save_path)
 
 
-scores_name = "scores.npy"
-scores_save_path = os.path.join(constants.MODELS_DIR, current_time_dir, scores_name)
+scores_save_path = os.path.join(constants.MODELS_DIR, current_time_dir, constants.TRAINING_SCORES_NAME)
 np.save(scores_save_path, scores)

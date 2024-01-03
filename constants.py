@@ -16,4 +16,12 @@ LEARNING_RATE = 0.001
 MOMENTUM = 0.9
 
 MODEL_PATH = "breast_model_pruning.pth"
-PRUNING_VALUES = [0.1, 0.2, 0.4, 0.6, 0.8]
+PRUNING_VALUES = [0, 0.1, 0.2, 0.4, 0.6, 0.8]
+
+TRAINING_SCORES_NAME = "scores.npy"
+PRUNING_SCORES_NAME = "pruning_scores.npy"
+
+fresh_trained_models_dir = "2024-01-03_19-30-05"
+fresh_pruned_models_dir = "2024-01-03_"
+TRAINED_MODELS_TO_PRUNE_CURRENT_DATETIME_DIR = "2024-01-03_01-05-25"
+PRUNED_MODELS_TO_TEST_CURRENT_DATETIME_DIR = "2024-01-03_16-40-51"
