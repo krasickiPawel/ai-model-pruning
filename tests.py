@@ -1,7 +1,7 @@
 import os
 import numpy as np
 from tabulate import tabulate
-from scipy.stats import ttest_rel, ttest_ind
+from scipy.stats import ttest_ind
 
 import constants
 
@@ -13,7 +13,7 @@ header_pruning_methods = ["pruning worst", "pruning random"]
 
 # scores[dataset_id, fold_id] = f1_result
 scores_save_path_train = os.path.join(constants.MODELS_DIR, constants.TRAINED_MODELS_TO_PRUNE_CURRENT_DATETIME_DIR, constants.TRAINING_SCORES_NAME)
-# scores[dataset_id, fold_id, pruning_method_id, pruning_value_id] = pruned_score
+# scores[dataset_id, fold_id, pruning_method_id, pruning_value_id]
 scores_save_path_prune = os.path.join(constants.PRUNING_DIR, constants.PRUNED_MODELS_TO_TEST_CURRENT_DATETIME_DIR, constants.PRUNING_SCORES_NAME)
 
 trained_scores = np.load(scores_save_path_train)

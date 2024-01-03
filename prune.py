@@ -52,7 +52,7 @@ for dataset_id, dataset in enumerate(datasets):
 
                 pruning_method(model, pruning_value)
                 pruned_score = get_f1_score(model, dl_test)
-                scores[dataset_id, fold_id, pruning_method_id, pruning_value_id] = pruned_score
+                scores[dataset_id, pruning_method_id, pruning_value_id, fold_id] = pruned_score
                 print(f"Pruned with {pruning_method.__name__}({pruning_value}) score:", pruned_score)
 
 
