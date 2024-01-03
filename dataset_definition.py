@@ -16,8 +16,8 @@ class BreastDataset(Dataset):
     def __getitem__(self, index):
         img_path = self.paths[index]
         img_label = self.labels[index]
-        img = Image.open(img_path)
 
-        img = self.transforms(img)
+        with Image.open(img_path) as image:
+            img = self.transforms(image)
 
         return img, img_label

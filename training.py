@@ -1,26 +1,28 @@
 import copy
+
 import torch
-import time
 import constants
+# from torchmetrics import F1Score
+from sklearn.metrics import f1_score
 
 
-def train(model, data_loaders, loss_func, optimizer, num_epochs=1):
-    device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
+def train_model(model, data_loaders, loss_func, optimizer, num_epochs=1):
+    device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
     print(device)
     model = model.to(device)
-    test_acc_history = []
+    test_f1_history = []
     best_model_wts = copy.deepcopy(model.state_dict())
-    best_acc = 0.0
+    best_f1 = 0
     torch.cuda.empty_cache()
 
-    start = time.time()
     for epoch in range(num_epochs):
-        print('Epoch {}/{}'.format(epoch, constants.NUM_EPOCHS - 1))
-        print('-' * 40)
+        print("-" * 40)
+        print("Epoch {}/{}".format(epoch, constants.NUM_EPOCHS - 1))
         for phase in data_loaders:
-            model.train() if phase == 'train' else model.eval()
-            current_loss = 0.0
-            current_corrects = 0
+            model.train() if phase == "train" else model.eval()
+            # current_loss = 0.0
+            all_preds = []
+            all_labels = []
 
             for imgs, labels in data_loaders[phase]:
                 imgs = imgs.to(device)
@@ -34,26 +36,30 @@ def train(model, data_loaders, loss_func, optimizer, num_epochs=1):
                         loss.backward()
                         optimizer.step()
 
-                current_loss += loss.item() * imgs.size(0)
-                current_corrects += torch.sum(preds == labels.data)  # trzeba sprawdzić
+                # current_loss += loss.item() * imgs.size(0)
+                all_preds.append(preds.cpu())
+                all_labels.append(labels.cpu().data)
 
-            epoch_loss = current_loss / len(data_loaders[phase].dataset)
-            epoch_acc = current_corrects.double() / len(data_loaders[phase].dataset)        # TODO zamienić na f1
+            torch_preds = torch.cat(all_preds)
+            torch_labels = torch.cat(all_labels)
 
-            print('{} Loss: {:.4f} Acc: {:.4f}'.format(phase, epoch_loss, epoch_acc))
-            if phase == "test" and epoch_acc > best_acc:
-                best_acc = epoch_acc
+            f1_sklearn = f1_score(torch_labels, torch_preds)
+            # f1_torchmetrics_obj = F1Score(task='binary')
+            # f1_torchmetrics = f1_torchmetrics_obj(torch_preds, torch_labels)
+
+            epoch_f1 = f1_sklearn
+
+            print("{} F1: {:.4f}".format(phase, epoch_f1))
+            if phase == "test" and epoch_f1 > best_f1:
+                best_f1 = epoch_f1
                 best_model_wts = copy.deepcopy(model.state_dict())
             if phase == "test":
-                test_acc_history.append(epoch_acc)
+                test_f1_history.append(epoch_f1)
 
-    time_elapsed = time.time() - start
-    print('Training complete in {:.0f}m {:.0f}s\n'.format(time_elapsed // 60, time_elapsed % 60))
-
-    for i, h in enumerate(test_acc_history):
-        print(f"Acc history {i}:", h)
-    print('Best val Acc: {:4f}'.format(best_acc))
+    for i, h in enumerate(test_f1_history):
+        print(f"F1 history {i}:", h)
+    print("Best val F1: {:4f}".format(best_f1))
 
     model.load_state_dict(best_model_wts)
 
-    return model, test_acc_history, best_acc
+    return model, best_f1

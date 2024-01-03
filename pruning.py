@@ -12,14 +12,15 @@ def prune_random(model):
 
 
 class RandomPruningMethod(prune.BasePruningMethod):
-    """Prune every other entry in a tensor
-    """
-    PRUNING_TYPE = 'unstructured'
+    """Prune every other entry in a tensor"""
+
+    PRUNING_TYPE = "unstructured"
 
     def compute_mask(self, t, default_mask):
         mask = default_mask.clone()
         mask.view(-1)[::2] = 0
         return mask
+
 
 # parameters_to_prune = [
 #     (module, "weight") for module in filter(lambda m: type(m) == torch.nn.Conv2d, model.modules())
