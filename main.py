@@ -1,7 +1,7 @@
 from init_model import create_resnet_model
 import torch
 from loaders import load_train_test_dataset
-from train import train
+from training import train
 
 
 def main():

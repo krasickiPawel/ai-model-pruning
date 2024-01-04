@@ -11,7 +11,7 @@ import constants
 import transformations
 from dataset import BreastDataset
 from preprocessing import os_helper
-from pruning import prune_worst, prune_random
+from pruning_helper import prune_worst, prune_random
 from predict import get_f1_score
 
 
