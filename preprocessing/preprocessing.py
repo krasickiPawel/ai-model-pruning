@@ -11,7 +11,7 @@ if len(sys.argv) <= 1:
     exit()
 
 settings.DATASETS_SOURCE_DIR = sys.argv[1]
-settings.DATASETS_RESIZED_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'datasets'))
+settings.DATASETS_RESIZED_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', settings.DATASETS_RESIZED_DIR))
 
 os_helper.create_dir_if_not_exist(settings.DATASETS_RESIZED_DIR)
 
