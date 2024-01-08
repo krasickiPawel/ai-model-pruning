@@ -6,7 +6,7 @@ import constants
 from preprocessing.os_helper import create_dir_if_not_exist
 
 datasets = os.listdir(constants.DATASETS_DIR)
-pruning_values = constants.PRUNING_VALUES
+pruning_values = [f"Pruning {round(val*100)}%" for val in constants.PRUNING_VALUES]
 pruning_methods = ["prune_worst", "prune_random"]
 
 scores_save_path_train = os.path.join(constants.MODELS_DIR, constants.TRAINED_MODELS_TO_PRUNE_CURRENT_DATETIME_DIR, constants.TRAINING_SCORES_NAME)
