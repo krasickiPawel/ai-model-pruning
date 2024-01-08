@@ -167,3 +167,90 @@ for dataset_id, dataset in enumerate(datasets):
         significance = "statistically significant" if result.pvalue < constants.P_VALUE else "NOT statistically SIGNIFICANT"
         print(f"{direction} result after pruning, {significance}")
         print()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#####################
+# import numpy as np
+# from scipy.stats import ttest_rel
+# from tabulate import tabulate
+#
+#
+# filename = "results04_34_54_934587"
+# scores_og = np.load("%s.npy" % filename)
+#
+# imputers = ["Simple (mean)", "Iterative", "KNN"]
+# selectors = ["SelectKBest", "RFECV", "SelectFromModel"]
+# clfs = ["GNB", "KNN", "CART"]
+#
+#
+# scores_avg_imputers = np.mean(scores_og, axis=3)
+# scores_avg_imputers = np.mean(scores_avg_imputers, axis=1)
+#
+# scores_avg_selectors = np.mean(scores_og, axis=3)
+# scores_avg_selectors = np.mean(scores_avg_selectors, axis=0)
+#
+# scores_avg_clfs = np.mean(scores_og, axis=1)
+# scores_avg_clfs = np.mean(scores_avg_clfs, axis=0)
+#
+# alfa = .05
+# t_statistic = np.zeros((3, 3))
+# p_value = np.zeros((3, 3))
+#
+# print("\n\n\n", "----------------------", "\n\n\n")
+#
+#
+# def calculate_statistic(matrix, hdrs):
+#     for i in range(len(hdrs)):
+#         for j in range(len(hdrs)):
+#             t_statistic[i, j], p_value[i, j] = ttest_rel(
+#                 matrix[i],
+#                 matrix[j]
+#             )
+#
+#     headers = hdrs
+#     names_column = np.array([[hdrs[0]], [hdrs[1]], [hdrs[2]]])
+#
+#     t_statistic_table = np.concatenate((names_column, t_statistic), axis=1)
+#     t_statistic_table = tabulate(t_statistic_table, headers, floatfmt=".2f")
+#     p_value_table = np.concatenate((names_column, p_value), axis=1)
+#     p_value_table = tabulate(p_value_table, headers, floatfmt=".2f")
+#     print("\nt-statistic:\n", t_statistic_table,
+#           "\n\n\np-value:\n", p_value_table)
+#
+#
+#     advantage = np.zeros((len(hdrs), len(hdrs)))
+#     advantage[t_statistic > 0] = 1
+#     advantage_table = tabulate(np.concatenate(
+#         (names_column, advantage), axis=1), headers)
+#     print("\nAdvantage:\n", advantage_table)
+#
+#     significance = np.zeros((len(hdrs), len(hdrs)))
+#     significance[p_value <= alfa] = 1
+#     significance_table = tabulate(np.concatenate(
+#         (names_column, significance), axis=1), headers)
+#     print("\nStatistical significance (alpha = 0.05):\n",
+#           significance_table)
+#
+#     stat_better = significance * advantage
+#     stat_better_table = tabulate(np.concatenate(
+#         (names_column, stat_better), axis=1), headers)
+#     print("\nStatistically significantly better:\n",
+#           stat_better_table)
+#
+#
+# calculate_statistic(scores_avg_imputers, imputers)
+# calculate_statistic(scores_avg_selectors, selectors)
+# calculate_statistic(scores_avg_clfs, clfs)

@@ -27,14 +27,10 @@ os_helper.create_dir_if_not_exist(os.path.join(constants.PRUNING_DIR, current_ti
 
 
 for dataset_id, dataset in enumerate(datasets):
-    print()
-    print("=" * 40)
-    print(dataset)
-    print()
+    print("=" * 20, dataset, "=" * 20, "\n")
 
     os_helper.create_dir_if_not_exist(os.path.join(constants.PRUNING_DIR, current_time_dir, dataset))
     model_paths = glob.glob(os.path.join(constants.MODELS_DIR, constants.TRAINED_MODELS_TO_PRUNE_CURRENT_DATETIME_DIR, dataset, "*.pth"))
-    print(model_paths)
 
     file_paths = glob.glob(os.path.join(constants.DATASETS_DIR, dataset, "**", "*.png"), recursive=True)
     paths_labels = {path: int(os.path.split(os.path.split(path)[0])[1]) for path in file_paths}
@@ -45,10 +41,8 @@ for dataset_id, dataset in enumerate(datasets):
     transformer = transformations.get_valid_transformer(X_file_paths[0])
 
     for fold_id, (train, test) in enumerate(rskf.split(X_file_paths, y_labels)):
-        print()
-        print("Fold {} ".format(fold_id) * 10)
-        model_contains_fold_name = f"fold-{fold_id}"
-        wanted_model_path = next((path for path in model_paths if model_contains_fold_name in path), None)
+        print("\nFold {} ".format(fold_id) * 10)
+        wanted_model_path = next((path for path in model_paths if f"fold-{fold_id}" in path), None)
         print(wanted_model_path)
 
         model_base = torch.load(wanted_model_path)
