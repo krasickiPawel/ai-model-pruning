@@ -6,10 +6,6 @@ import matplotlib
 matplotlib.use('TkAgg')
 
 
-def show_results():
-    pass
-
-
 datasets = os.listdir(constants.DATASETS_DIR)
 pruning_values = constants.PRUNING_VALUES
 pruning_methods = ["prune_worst", "prune_random"]
@@ -35,7 +31,7 @@ plt.rcParams["figure.autolayout"] = True
 # # .imshow(img, cmap='magma')
 # fig.savefig("fig1")
 
-plt.xlabel("pruning values" + str(pruning_values))
+plt.xlabel("pruning values")
 plt.title("Pruning by smallest values")
 plt.ylabel("F1")
 # plt.xticks(pruning_values)
@@ -48,7 +44,7 @@ plt.show()
 
 
 
-plt.xlabel("pruning values" + str(pruning_values))
+plt.xlabel("pruning values")
 plt.title("Pruning by random values")
 plt.ylabel("F1")
 # plt.xticks(pruning_values)

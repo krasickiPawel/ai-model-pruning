@@ -17,19 +17,21 @@ pruned_scores = np.load(scores_save_path_prune)     # scores[dataset_id, pruning
 
 
 table_default_avg = tabulate(zip(datasets, np.mean(trained_scores, axis=-1)), tablefmt="grid", headers=["dataset", "F1 score avg"])
+print("Average F1 scores without pruning")
 print(table_default_avg)
 print()
 table_default_std = tabulate(zip(datasets, np.std(trained_scores, axis=-1)), tablefmt="grid", headers=["dataset", "F1 score std"])
 print(table_default_std)
 
 
-pruned_folds_mean = np.mean(pruned_scores, axis=1)      # zamienić na -1
-# pruned_folds_mean = np.mean(pruned_scores, axis=-1)
+pruned_folds_mean = np.mean(pruned_scores, axis=1)
 table = tabulate(pruned_folds_mean[:, 0, :], tablefmt="grid", headers=pruning_values, showindex=datasets)
+print()
 print(pruning_methods[0])
 print(table)
 
 table = tabulate(pruned_folds_mean[:, 1, :], tablefmt="grid", headers=pruning_values, showindex=datasets)
+print()
 print(pruning_methods[1])
 print(table)
 
@@ -66,14 +68,17 @@ def compare_f1_scores_using_pruning_random():
             )
     return scores_difference, scores_p_value
 
-
+# B - Better
+# W - Worse
+# S - Significant
+# N - Not significant
 def generate_worse_significant_table(scores_difference, scores_p_value):
     worse = np.empty((len(datasets), len(constants.PRUNING_VALUES)), dtype='|S32')
-    worse[:] = "BETTER"
+    worse[:] = "B"
     significant = np.empty((len(datasets), len(constants.PRUNING_VALUES)), dtype='|S32')
-    significant[:] = "NOT significant"
-    worse[scores_difference >= 0] = "WORSE"
-    significant[scores_p_value < constants.P_VALUE] = "SIGNIFICANT"
+    significant[:] = "N"
+    worse[scores_difference >= 0] = "W"
+    significant[scores_p_value < constants.P_VALUE] = "S"
 
     for idx, (w, s) in enumerate(zip(worse, significant)):
         for i, (w_inner, s_inner) in enumerate(zip(w, s)):
